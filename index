@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ABC Company</title>
+
+<style>
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:Arial, Helvetica, sans-serif;
+}
+
+body{
+    background:#f5f7fa;
+    color:#333;
+}
+
+header{
+    background:#0b5cad;
+    color:white;
+    padding:18px 50px;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+}
+
+header h2{
+    font-size:28px;
+}
+
+nav a{
+    color:white;
+    text-decoration:none;
+    margin-left:25px;
+    font-size:17px;
+}
+
+.hero{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    padding:80px;
+    background:white;
+}
+
+.hero-text{
+    width:50%;
+}
+
+.hero-text h1{
+    font-size:48px;
+    margin-bottom:20px;
+    color:#0b5cad;
+}
+
+.hero-text p{
+    font-size:20px;
+    line-height:32px;
+    margin-bottom:30px;
+}
+
+.hero button{
+    background:#0b5cad;
+    color:white;
+    border:none;
+    padding:15px 35px;
+    font-size:18px;
+    border-radius:5px;
+    cursor:pointer;
+}
+
+.hero img{
+    width:450px;
+}
+
+.services{
+    padding:70px;
+    text-align:center;
+}
+
+.services h2{
+    color:#0b5cad;
+    margin-bottom:40px;
+}
+
+.cards{
+    display:flex;
+    justify-content:center;
+    gap:25px;
+    flex-wrap:wrap;
+}
+
+.card{
+    background:white;
+    width:280px;
+    padding:25px;
+    border-radius:10px;
+    box-shadow:0px 4px 10px rgba(0,0,0,.1);
+}
+
+.card h3{
+    color:#0b5cad;
+    margin-bottom:15px;
+}
+
+footer{
+    background:#0b5cad;
+    color:white;
+    text-align:center;
+    padding:20px;
+    margin-top:50px;
+}
+
+/* Floating Contact Button */
+
+.contact-btn{
+    position:fixed;
+    bottom:20px;
+    right:20px;
+    background:#0b5cad;
+    color:white;
+    padding:15px 20px;
+    border-radius:50px;
+    cursor:pointer;
+    box-shadow:0px 5px 10px rgba(0,0,0,.3);
+}
+</style>
+
+</head>
+
+<body>
+
+<header>
+
+<h2>ABC Company</h2>
+
+<nav>
+<a href="#">Home</a>
+<a href="#">Services</a>
+<a href="#">Support</a>
+<a href="#">Contact</a>
+</nav>
+
+</header>
+
+<section class="hero">
+
+<div class="hero-text">
+
+<h1>Welcome to ABC Company</h1>
+
+<p>
+We provide IT support, cloud services, software development, and enterprise solutions.
+Need help? Our virtual assistant is available 24×7 to assist you.
+</p>
+
+<button>Explore Services</button>
+
+</div>
+
+<img src="https://images.unsplash.com/photo-1516321318423-f06f85e504b3?w=900"
+alt="IT Support">
+
+</section>
+
+<section class="services">
+
+<h2>Our Services</h2>
+
+<div class="cards">
+
+<div class="card">
+<h3>IT Support</h3>
+<p>Raise incidents, request services, and track tickets online.</p>
+</div>
+
+<div class="card">
+<h3>Cloud Solutions</h3>
+<p>Secure cloud migration and infrastructure management.</p>
+</div>
+
+<div class="card">
+<h3>Cyber Security</h3>
+<p>Enterprise-grade security monitoring and compliance services.</p>
+</div>
+
+</div>
+
+</section>
+
+<footer>
+
+© 2026 ABC Company | All Rights Reserved
+
+</footer>
+
+<div class="contact-btn">
+Need Help?
+</div>
+
+<!-- ===================================================== -->
+<!-- Paste ServiceNow Web Embeddable Script Below -->
+<!-- Example:
+<script src="YOUR_SERVICENOW_EMBED_SCRIPT"></script>
+-->
+<!-- ===================================================== -->
+
+</body>
+</html>
