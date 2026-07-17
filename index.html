@@ -208,5 +208,46 @@ Need Help?
 -->
 <!-- ===================================================== -->
 
+<!--  
+    Module: ABC Company Website
+    Group: Group 1
+    Instance: Catalog browse 1
+-->
+<section class="services">
+
+<h2>ServiceNow Catalog</h2>
+
+<sn-embedx-catalog-browse
+    selection-type="catalog"
+    select-catalogs="ABC Service Catalog">
+</sn-embedx-catalog-browse>
+
+</section>
+<!--
+	The component also includes the following additional properties:
+	select-categories
+	hide-price
+	hide-navigation-panel
+	hide-popular-requests
+	hide-recent-requests
+-->
+
+<script type="module">
+import { init } from 'https://nagarrosoftwarepvtltddemo19.service-now.com/uxasset/externals/sn_embeddable_core/index.jsdbx';
+
+await init({
+    theme: 'fad87d2ca304121029a4d1aed31e610f',
+    baseURL: 'https://nagarrosoftwarepvtltddemo19.service-now.com',
+    authCallback: getTokenCallBack,
+    module: '87992d5a47868350aeb6abf9316d43b0',
+    pageName: document.title
+});
+
+function getTokenCallBack() {
+    // Must return a valid authentication token.
+    return Promise.resolve(null);
+}
+</script>
+
 </body>
 </html>
