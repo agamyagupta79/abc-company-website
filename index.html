@@ -236,49 +236,7 @@ alt="IT Support">
 
 </footer>
 
-<!-- ========================================================= -->
-<!-- 🟢 1. GLOBAL SERVICENOW SCRIPT (Agar pehle hata diya tha) -->
-<!-- ========================================================= -->
-<script type="module">
-    import { init } from 'https://nagarrosoftwarepvtltddemo19.service-now.com/uxasset/externals/sn_embeddable_core/index.jsdbx';
-    await init({
-        baseURL: 'https://nagarrosoftwarepvtltddemo19.service-now.com',
-        module: '87992d5a47868350aeb6abf9316d43b0', /* Aapka Module ID */
-        pageName: document.title
-    });
-</script>
 
-<!-- ========================================================= -->
-<!-- 🟢 2. SIDE-BY-SIDE DASHBOARD (LIST + CREATE FORM)       -->
-<!-- Ye Flexbox code dono ko bina redirect kiye aamne-saamne layega -->
-<!-- ========================================================= -->
-<div style="display: flex; gap: 25px; align-items: flex-start; max-width: 1350px; margin: 30px auto; padding: 0 15px; flex-wrap: wrap;">
-
-    <!-- 👈 LEFT COLUMN: CASE LIST (70% Width) -->
-    <div style="flex: 1 1 700px; background: #fff; border: 1px solid #e0e0e0; border-radius: 10px; padding: 20px; box-shadow: 0 4px 12px rgba(0,0,0,0.05);">
-        <h3 style="margin-top: 0; color: #003366; border-bottom: 2px solid #f0f0f0; padding-bottom: 10px;">
-            📋 My Active Tickets
-        </h3>
-        <sn-web-embeddable 
-            instance-url="https://nagarrosoftwarepvtltddemo19.service-now.com"
-            module-id="87992d5a47868350aeb6abf9316d43b0"
-            component="case-list">
-        </sn-web-embeddable>
-    </div>
-
-    <!-- 👉 RIGHT COLUMN: CREATE CASE FORM (30% Width - Sticky) -->
-    <div style="flex: 1 1 350px; background: #f8f9fa; border: 1px solid #e0e0e0; border-radius: 10px; padding: 20px; position: sticky; top: 20px; box-shadow: 0 4px 12px rgba(0,0,0,0.05);">
-        <h3 style="margin-top: 0; color: #003366; border-bottom: 2px solid #e0e0e0; padding-bottom: 10px;">
-            📝 Open New Case
-        </h3>
-        <sn-web-embeddable 
-            instance-url="https://nagarrosoftwarepvtltddemo19.service-now.com"
-            module-id="87992d5a47868350aeb6abf9316d43b0"
-            component="case-form"> <!-- Notice: Yahan form component hai -->
-        </sn-web-embeddable>
-    </div>
-
-</div>
 <!-- ========================================================= -->
 <!-- ========================================================= -->
 
@@ -317,6 +275,55 @@ alt="IT Support">
     Group: Group 1
     Instance: Case create 1
 -->
+<!--  
+    Module: ABC Company Website
+    Group: Group 1
+    Instance: Case create 1
+-->
+<sn-embedx-case-form
+	sys-id="de45c412c312310015519f2974d3ae1b"
+	confirmation-text="Case submitted successfully!"
+	confirmation-sub-text="Estimated resolution in 24 hours"
+	reference-number-label="Reference Number :"
+	primary-button-label="View details"
+	secondary-button-label="Browse services"
+	prefill-fields='{}'
+	custom-illustration-size="Auto">
+</sn-embedx-case-form>
+<!--
+	The component also includes the following additional properties:
+	hide-reference-number
+	hide-primary-button
+	hide-secondary-button
+	hide-record-created-confirmation
+	hide-errors
+	hide-notifications
+-->
+
+<script type="module">
+	import { getEmbeddables, setEvents, setProperties } from 'https://nagarrosoftwarepvtltddemo19.service-now.com/uxasset/externals/sn_embeddable_core/index.jsdbx';
+	
+	const snEmbedxCaseForm = document.querySelector('sn-embedx-case-form');
+
+	/* Uncomment this code for the default behaviour of the Case create component.
+
+	// Get the record producer record id from the current URL.
+	// Optionally, get query to pre fill the form.
+	const currentURL = new URL(window.location.href);
+	const urlParams = new URLSearchParams(currentURL.search);
+	const product = urlParams.get('emb_product');
+	// Update the sysId of the component property.
+	// Optionally, update the prefill fields property
+	const prefillConfig = {
+		product: product
+	};
+	setProperties(snEmbedxCaseForm,{
+		prefillFields: prefillConfig
+	});
+*/
+
+	getEmbeddables(["sn-embedx-case-form"]);
+</script>
 
 <!--
 	The component also includes the following additional properties:
