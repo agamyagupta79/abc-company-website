@@ -262,13 +262,38 @@ alt="IT Support">
     Group: Group 1
     Instance: Case list 1
 -->
+<!--  
+    Module: ABC Company Website
+    Group: Group 1
+    Instance: Case list 1
+-->
 <sn-embedx-case-list
 	table="sn_customerservice_case"
-	limit="50"
+	limit="5"
 	list-title="List of Cases"
-	query="state=1"
+	query="state=1^ORsys_created_onONThis month@javascript:gs.beginningOfThisMonth()@javascript:gs.endOfThisMonth()^ORsys_updated_onONToday@javascript:gs.beginningOfToday()@javascript:gs.endOfToday()"
 	columns="number,short_description,sys_updated_on,state">
 </sn-embedx-case-list>
+<!--
+	The component also includes the following additional properties:
+	hide-header
+	hide-last-refreshed-text
+	hide-record-count
+	hide-search
+	hide-refresh
+	show-filters
+	hide-when-empty
+	disable-column-resizing
+	hide-errors
+	view
+-->
+
+<script type="module">
+	import { getEmbeddables } from 'https://nagarrosoftwarepvtltddemo19.service-now.com/uxasset/externals/sn_embeddable_core/index.jsdbx';
+	
+	getEmbeddables(["sn-embedx-case-list"]);
+</script>
+
 
 	<!--  
     Module: ABC Company Website
@@ -343,11 +368,7 @@ alt="IT Support">
 
 
 
-<script type="module">
-	import { getEmbeddables } from 'https://nagarrosoftwarepvtltddemo19.service-now.com/uxasset/externals/sn_embeddable_core/index.jsdbx';
-	
-	getEmbeddables(["sn-embedx-case-list"]);
-</script>
+
 
 <!--
 	The component also includes the following additional properties:
