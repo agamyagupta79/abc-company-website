@@ -128,7 +128,26 @@ footer{
     box-shadow:0px 5px 10px rgba(0,0,0,.3);
 }
 </style>
+	<script type="module">
+import { init , login , logout } from 'https://nagarrosoftwarepvtltddemo19.service-now.com/uxasset/externals/sn_embeddable_core/index.jsdbx';
 
+await init({
+	theme: 'fad87d2ca304121029a4d1aed31e610f',  /* sys_id of the theme to use for the embeddable components in your website*/
+	baseURL: 'https://nagarrosoftwarepvtltddemo19.service-now.com', /* Base URL of the instance to be used for the embeddable components in your website*/
+	authCallback: getTokenCallBack, /* Function which returns the auth token for the current user, required for auth setup*/
+	module: '87992d5a47868350aeb6abf9316d43b0', /* ABC Company Website*/
+    pageName: document.title, /* Uses the browser's document title as the page name in User analytics experience*/
+	// cacheComponents: ["sn-embedx-case-form","sn-embedx-case-list","sn-embedx-case-view","sn-embedx-catalog-browse","sn-embedx-catalog-item-form","903894c1b742301035a36161de11a992","sn-embedx-kb-article-view","sn-embedx-object-list","sn-embedx-playbook-intake"] /* Pre-caches resources for improved performance. Update component list as per your usage */
+});
+function getTokenCallBack() {
+	var idToken; /* Get the id token for the current user */
+	return Promise.resolve(idToken);
+}
+/* Uncomment below functions to handle login and logout once the user logs into your website */
+// await login();
+// await logout();
+
+	</script>
 
 </head>
 
@@ -212,6 +231,37 @@ alt="IT Support">
     Group: Group 1
     Instance: Catalog browse 1
 -->
+<!--  
+    Module: ABC Company Website
+    Group: Group 1
+    Instance: Case list 1
+-->
+<sn-embedx-case-list
+	table="sn_customerservice_case"
+	limit="20"
+	list-title="List of Cases"
+	query="state=10"
+	columns="number,short_description,sys_updated_on,state">
+</sn-embedx-case-list>
+<!--
+	The component also includes the following additional properties:
+	hide-header
+	hide-last-refreshed-text
+	hide-record-count
+	hide-search
+	hide-refresh
+	show-filters
+	hide-when-empty
+	disable-column-resizing
+	hide-errors
+	view
+-->
+
+<script type="module">
+	import { getEmbeddables } from 'https://nagarrosoftwarepvtltddemo19.service-now.com/uxasset/externals/sn_embeddable_core/index.jsdbx';
+	
+	getEmbeddables(["sn-embedx-case-list"]);
+</script>
 
 <!--
 	The component also includes the following additional properties:
