@@ -149,6 +149,25 @@ function getTokenCallBack() {
 
 	</script>
 
+	<script>import { init , login , logout } from 'https://nagarrosoftwarepvtltddemo19.service-now.com/uxasset/externals/sn_embeddable_core/index.jsdbx';
+
+await init({
+	theme: 'fad87d2ca304121029a4d1aed31e610f',  /* sys_id of the theme to use for the embeddable components in your website*/
+	baseURL: 'https://nagarrosoftwarepvtltddemo19.service-now.com', /* Base URL of the instance to be used for the embeddable components in your website*/
+	authCallback: getTokenCallBack, /* Function which returns the auth token for the current user, required for auth setup*/
+	module: '87992d5a47868350aeb6abf9316d43b0', /* ABC Company Website*/
+    pageName: document.title, /* Uses the browser's document title as the page name in User analytics experience*/
+	// cacheComponents: ["sn-embedx-case-form","sn-embedx-case-list","sn-embedx-case-view","sn-embedx-catalog-browse","sn-embedx-catalog-item-form","903894c1b742301035a36161de11a992","sn-embedx-kb-article-view","sn-embedx-object-list","sn-embedx-playbook-intake"] /* Pre-caches resources for improved performance. Update component list as per your usage */
+});
+function getTokenCallBack() {
+	var idToken; /* Get the id token for the current user */
+	return Promise.resolve(idToken);
+}
+/* Uncomment below functions to handle login and logout once the user logs into your website */
+// await login();
+// await logout();
+
+ </script>
 </head>
 
 <body>
@@ -248,6 +267,57 @@ alt="IT Support">
 	query="state=1"
 	columns="number,short_description,sys_updated_on,state">
 </sn-embedx-case-list>
+
+	<!--  
+    Module: ABC Company Website
+    Group: Group 1
+    Instance: Case create 1
+-->
+<sn-embedx-case-form
+	sys-id="de45c412c312310015519f2974d3ae1b"
+	confirmation-text="Case submitted successfully!"
+	confirmation-sub-text="Estimated resolution in 24 hours"
+	reference-number-label="Reference Number :"
+	primary-button-label="View details"
+	secondary-button-label="Browse services"
+	prefill-fields='{}'
+	custom-illustration-size="Auto">
+</sn-embedx-case-form>
+<!--
+	The component also includes the following additional properties:
+	hide-reference-number
+	hide-primary-button
+	hide-secondary-button
+	hide-record-created-confirmation
+	hide-errors
+	hide-notifications
+-->
+
+<script type="module">
+	import { getEmbeddables, setEvents, setProperties } from 'https://nagarrosoftwarepvtltddemo19.service-now.com/uxasset/externals/sn_embeddable_core/index.jsdbx';
+	
+	const snEmbedxCaseForm = document.querySelector('sn-embedx-case-form');
+
+	/* Uncomment this code for the default behaviour of the Case create component.
+
+	// Get the record producer record id from the current URL.
+	// Optionally, get query to pre fill the form.
+	const currentURL = new URL(window.location.href);
+	const urlParams = new URLSearchParams(currentURL.search);
+	const product = urlParams.get('emb_product');
+	// Update the sysId of the component property.
+	// Optionally, update the prefill fields property
+	const prefillConfig = {
+		product: product
+	};
+	setProperties(snEmbedxCaseForm,{
+		prefillFields: prefillConfig
+	});
+*/
+
+	getEmbeddables(["sn-embedx-case-form"]);
+</script>
+
 <!--
 	The component also includes the following additional properties:
 	hide-header
