@@ -236,7 +236,19 @@ alt="IT Support">
 
 </footer>
 
+<!-- ========================================================= -->
+<!-- 🟢 NAYA SIDE-BY-SIDE DASHBOARD CODE (YAHAN PASTE KAREIN)  -->
+<!-- ========================================================= -->
+<div style="max-width: 1300px; margin: 30px auto; border: 1px solid #ccc; border-radius: 12px; overflow: hidden; box-shadow: 0 4px 12px rgba(0,0,0,0.08);">
+    
+    <iframe 
+        src="https://nagarrosoftwarepvtltddemo19.service-now.com/$spd.do#/sp/preview/desktop/case_dashboard_side_by_side" 
+        style="width: 100%; height: 750px; border: none;"
+        title="Customer Support Dashboard">
+    </iframe>
 
+</div>
+<!-- ========================================================= -->
 
 <!-- ===================================================== -->
 <!-- Paste ServiceNow Web Embeddable Script Below -->
@@ -273,50 +285,6 @@ alt="IT Support">
     Group: Group 1
     Instance: Case create 1
 -->
-<sn-embedx-case-form
-	sys-id="de45c412c312310015519f2974d3ae1b"
-	confirmation-text="Case submitted successfully!"
-	confirmation-sub-text="Estimated resolution in 24 hours"
-	reference-number-label="Reference Number :"
-	primary-button-label="View details"
-	secondary-button-label="Browse services"
-	prefill-fields='{}'
-	custom-illustration-size="Auto">
-</sn-embedx-case-form>
-<!--
-	The component also includes the following additional properties:
-	hide-reference-number
-	hide-primary-button
-	hide-secondary-button
-	hide-record-created-confirmation
-	hide-errors
-	hide-notifications
--->
-
-<script type="module">
-	import { getEmbeddables, setEvents, setProperties } from 'https://nagarrosoftwarepvtltddemo19.service-now.com/uxasset/externals/sn_embeddable_core/index.jsdbx';
-	
-	const snEmbedxCaseForm = document.querySelector('sn-embedx-case-form');
-
-	/* Uncomment this code for the default behaviour of the Case create component.
-
-	// Get the record producer record id from the current URL.
-	// Optionally, get query to pre fill the form.
-	const currentURL = new URL(window.location.href);
-	const urlParams = new URLSearchParams(currentURL.search);
-	const product = urlParams.get('emb_product');
-	// Update the sysId of the component property.
-	// Optionally, update the prefill fields property
-	const prefillConfig = {
-		product: product
-	};
-	setProperties(snEmbedxCaseForm,{
-		prefillFields: prefillConfig
-	});
-*/
-
-	getEmbeddables(["sn-embedx-case-form"]);
-</script>
 
 <!--
 	The component also includes the following additional properties:
@@ -332,25 +300,9 @@ alt="IT Support">
 	view
 -->
 
-<script type="module">
-	import { getEmbeddables } from 'https://nagarrosoftwarepvtltddemo19.service-now.com/uxasset/externals/sn_embeddable_core/index.jsdbx';
-	
-	getEmbeddables(["sn-embedx-case-list"]);
-</script>
 
-<!--
-	The component also includes the following additional properties:
-	hide-header
-	hide-last-refreshed-text
-	hide-record-count
-	hide-search
-	hide-refresh
-	show-filters
-	hide-when-empty
-	disable-column-resizing
-	hide-errors
-	view
--->
+
+
 
 <script type="module">
 	import { getEmbeddables } from 'https://nagarrosoftwarepvtltddemo19.service-now.com/uxasset/externals/sn_embeddable_core/index.jsdbx';
