@@ -237,17 +237,49 @@ alt="IT Support">
 </footer>
 
 <!-- ========================================================= -->
-<!-- 🟢 NAYA SIDE-BY-SIDE DASHBOARD CODE (YAHAN PASTE KAREIN)  -->
+<!-- 🟢 1. GLOBAL SERVICENOW SCRIPT (Agar pehle hata diya tha) -->
 <!-- ========================================================= -->
-<div style="max-width: 1300px; margin: 30px auto; border: 1px solid #ccc; border-radius: 12px; overflow: hidden; box-shadow: 0 4px 12px rgba(0,0,0,0.08);">
-    
-    <iframe 
-        src="https://nagarrosoftwarepvtltddemo19.service-now.com/$spd.do#/sp/preview/desktop/case_dashboard_side_by_side" 
-        style="width: 100%; height: 750px; border: none;"
-        title="Customer Support Dashboard">
-    </iframe>
+<script type="module">
+    import { init } from 'https://nagarrosoftwarepvtltddemo19.service-now.com/uxasset/externals/sn_embeddable_core/index.jsdbx';
+    await init({
+        baseURL: 'https://nagarrosoftwarepvtltddemo19.service-now.com',
+        module: '87992d5a47868350aeb6abf9316d43b0', /* Aapka Module ID */
+        pageName: document.title
+    });
+</script>
+
+<!-- ========================================================= -->
+<!-- 🟢 2. SIDE-BY-SIDE DASHBOARD (LIST + CREATE FORM)       -->
+<!-- Ye Flexbox code dono ko bina redirect kiye aamne-saamne layega -->
+<!-- ========================================================= -->
+<div style="display: flex; gap: 25px; align-items: flex-start; max-width: 1350px; margin: 30px auto; padding: 0 15px; flex-wrap: wrap;">
+
+    <!-- 👈 LEFT COLUMN: CASE LIST (70% Width) -->
+    <div style="flex: 1 1 700px; background: #fff; border: 1px solid #e0e0e0; border-radius: 10px; padding: 20px; box-shadow: 0 4px 12px rgba(0,0,0,0.05);">
+        <h3 style="margin-top: 0; color: #003366; border-bottom: 2px solid #f0f0f0; padding-bottom: 10px;">
+            📋 My Active Tickets
+        </h3>
+        <sn-web-embeddable 
+            instance-url="https://nagarrosoftwarepvtltddemo19.service-now.com"
+            module-id="87992d5a47868350aeb6abf9316d43b0"
+            component="case-list">
+        </sn-web-embeddable>
+    </div>
+
+    <!-- 👉 RIGHT COLUMN: CREATE CASE FORM (30% Width - Sticky) -->
+    <div style="flex: 1 1 350px; background: #f8f9fa; border: 1px solid #e0e0e0; border-radius: 10px; padding: 20px; position: sticky; top: 20px; box-shadow: 0 4px 12px rgba(0,0,0,0.05);">
+        <h3 style="margin-top: 0; color: #003366; border-bottom: 2px solid #e0e0e0; padding-bottom: 10px;">
+            📝 Open New Case
+        </h3>
+        <sn-web-embeddable 
+            instance-url="https://nagarrosoftwarepvtltddemo19.service-now.com"
+            module-id="87992d5a47868350aeb6abf9316d43b0"
+            component="case-form"> <!-- Notice: Yahan form component hai -->
+        </sn-web-embeddable>
+    </div>
 
 </div>
+<!-- ========================================================= -->
 <!-- ========================================================= -->
 
 <!-- ===================================================== -->
