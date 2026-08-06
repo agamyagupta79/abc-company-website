@@ -290,10 +290,34 @@ alt="IT Support">
 -->
 
 <script type="module">
-	import { getEmbeddables } from 'https://nagarrosoftwarepvtltddemo19.service-now.com/uxasset/externals/sn_embeddable_core/index.jsdbx';
+	import { getEmbeddables, setEvents, setProperties } from 'https://nagarrosoftwarepvtltddemo19.service-now.com/uxasset/externals/sn_embeddable_core/index.jsdbx';
 	
+	const snEmbedxCaseList = document.querySelector('sn-embedx-case-list');
+
 	getEmbeddables(["sn-embedx-case-list"]);
+
+	const eventHandlers = {
+		'SN_EMBEDX_CASE_LIST#RECORD_SELECTED' : (e) => {
+			// This event is dispatched when a record is selected.
+			var {table, record_sys_id} = e.detail.payload;
+			// the logic to construct the URL for the Case View component. Add your portal URL here.
+			const caseViewURL = '/caseview?emb_table='+table+'&emb_recordid='+record_sys_id;
+			// Redirect to the Case View component page
+			open(caseViewURL,'_self');
+		},
+		'SN_EMBEDX_CASE_LIST#COMPONENT_READY' : (e) => {
+			// This event is dispatched when a component is ready and usable.
+		},
+		'SN_EMBEDX_CASE_LIST#COMPONENT_ERROR' : (e) => {
+			// This event is dispatched when a property validation or internal error occurs.
+			var {errorMessage, errorType} = e.detail.payload;
+			console.log(errorMessage, errorType);
+		}
+	};
+
+	setEvents(snEmbedxCaseList, eventHandlers);
 </script>
+
 
 
 	<!--  
