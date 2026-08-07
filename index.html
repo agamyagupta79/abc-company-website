@@ -374,6 +374,88 @@ alt="IT Support">
 
 	getEmbeddables(["sn-embedx-case-form"]);
 </script>
+	<!--  
+    Module: ABC Company Website
+    Group: Group 1
+    Instance: Case view 1
+-->
+<sn-embedx-case-view
+	table="sn_customerservice_case"
+	table-view-for-related-list="4006fee3d7600200e5982cf65e6103de"
+	header-configuration-id="1db45f9118520210f8775b8843daf927"
+	action-configuration-id="b226535518520210f8775b8843daf9fb"
+	playbook-stage-orientation="horizontal"
+	visible-horizontal-playbook-stages="5"
+	playbook-activity-view-mode="focused"
+	sys-id="ce593caf47b2aa90aeb6abf9316d4393">
+</sn-embedx-case-view>
+<!--
+	The component also includes the following additional properties:
+	hide-activity
+	hide-attachments
+	enable-rich-text
+	hide-actions
+	hide-all-related-lists
+	show-custom-tab
+	hide-errors
+	hide-playbook-process-tab
+	selected-playbook-context-id
+	selected-stage-context-id
+	selected-activity-context-id
+	hide-playbook-stages
+-->
+
+<script type="module">
+	import { getEmbeddables, setEvents, setProperties } from 'https://nagarrosoftwarepvtltddemo19.service-now.com/uxasset/externals/sn_embeddable_core/index.jsdbx';
+	
+	const snEmbedxCaseView = document.querySelector('sn-embedx-case-view');
+
+	/* Uncomment this code for the default behaviour of the Case View component.
+
+	// Get the record id and table from the current URL for a standard case.
+	// Optionally, get playbook experience ID, playbook context ID, stage context ID,
+	// and activity context ID for playbook case.
+	const currentURL = new URL(window.location.href);
+	const urlParams = new URLSearchParams(currentURL.search);
+	const tableName = urlParams.get('emb_table');
+	const sysRecordId = urlParams.get('emb_recordid');
+	const playbookExperience = urlParams.get('emb_playbook_experience');
+	const playbookContextId = urlParams.get('emb_playbook_context_id');
+	const stageContextId = urlParams.get('emb_stage_context_id');
+	const activityContextId = urlParams.get('emb_activity_context_id');
+
+	// Update the sysId and table properties of the componentProperties object.
+	// Optionally, update the playbook experience ID, playbook context ID,
+	// stage context ID, and activity context ID for the playbook case view as well.
+	setProperties(snEmbedxCaseView,{
+		table:tableName,
+		sysId:sysRecordId,
+		playbookExperience:playbookExperience,
+		selectedPlaybookContextId:playbookContextId,
+		selectedStageContextId:stageContextId,
+		selectedActivityContextId:activityContextId
+	});
+	*/
+
+	getEmbeddables(["sn-embedx-case-view"]);
+
+	const eventHandlers = {
+		'SN_EMBEDX_CASE_VIEW#COMPONENT_READY' : (e) => {
+			// This event is dispatched when a component is ready and usable.
+		},
+		'SN_EMBEDX_CASE_VIEW#COMPONENT_ERROR' : (e) => {
+			// This event is dispatched when a property validation or internal error occurs.
+			var {errorMessage, errorType} = e.detail.payload;
+			console.log(errorMessage, errorType);
+		},
+		'SN_EMBEDX_CASE_VIEW#CASE_COMMENT_ADDED' : (e) => {
+			// This event is dispatched when a comment is added in the activity stream.
+		}
+	};
+
+	setEvents(snEmbedxCaseView, eventHandlers);
+</script>
+
 <!--  
     Module: ABC Company Website
     Group: Group 1
