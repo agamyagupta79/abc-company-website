@@ -4,10 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>ABC Company</title>
-
     <script type="module">
       import { init , login , logout } from 'https://nagarrosoftwarepvtltddemo19.service-now.com/uxasset/externals/sn_embeddable_core/index.jsdbx';
-
 await init({
 	theme: 'fad87d2ca304121029a4d1aed31e610f',  /* sys_id of the theme to use for the embeddable components in your website*/
 	baseURL: 'https://nagarrosoftwarepvtltddemo19.service-now.com', /* Base URL of the instance to be used for the embeddable components in your website*/
@@ -17,19 +15,19 @@ await init({
 	// cacheComponents: ["sn-embedx-case-form","sn-embedx-case-list","sn-embedx-case-view","sn-embedx-catalog-browse","sn-embedx-catalog-item-form","903894c1b742301035a36161de11a992","sn-custom-embedx-incident-view","sn-embedx-kb-article-view","sn-embedx-object-list","sn-embedx-playbook-intake"] /* Pre-caches resources for improved performance. Update component list as per your usage */
 });
 function getTokenCallBack() {
-	var idToken; /* Get the id token for the current user */
+	// TODO: this must return a real ServiceNow auth token for the current
+	// logged-in user (e.g. an id_token from your login/SSO flow). Leaving
+	// this undefined will fail auth for any component that needs a logged-in
+	// user, and can itself cause the embed to render blank.
+	var idToken;
 	return Promise.resolve(idToken);
 }
 /* Uncomment below functions to handle login and logout once the user logs into your website */
 // await login();
 // await logout();
-
-
     </script>
 </head>
-
 <body>
-
     <h1>ABC Company</h1>
 <!--  
     Module: ABC Company Website
@@ -56,21 +54,21 @@ function getTokenCallBack() {
 	hide-errors
 	view
 -->
-
 <script type="module">
 	import { getEmbeddables, setEvents, setProperties } from 'https://nagarrosoftwarepvtltddemo19.service-now.com/uxasset/externals/sn_embeddable_core/index.jsdbx';
 	
 	const snEmbedxCaseList = document.querySelector('sn-embedx-case-list');
-
 	getEmbeddables(["sn-embedx-case-list"]);
-
 	const eventHandlers = {
 		'SN_EMBEDX_CASE_LIST#RECORD_SELECTED' : (e) => {
 			// This event is dispatched when a record is selected.
 			var {table, record_sys_id} = e.detail.payload;
-			// the logic to construct the URL for the Case View component. Add your portal URL here.
-			const caseViewURL = '/caseview?emb_table='+table+'&emb_recordid='+record_sys_id;
-			// Redirect to the Case View component page
+			// CHANGED: previously built '/caseview?emb_table=...&emb_recordid=...',
+			// a page that doesn't exist on this Vercel site (that's what was
+			// 404ing). Now links straight to the record inside ServiceNow, which
+			// exists today with no extra page needed.
+			const caseViewURL = 'https://nagarrosoftwarepvtltddemo19.service-now.com/' + table + '.do?sys_id=' + record_sys_id;
+			// Redirect to the case record in ServiceNow
 			open(caseViewURL,'_self');
 		},
 		'SN_EMBEDX_CASE_LIST#COMPONENT_READY' : (e) => {
@@ -82,10 +80,8 @@ function getTokenCallBack() {
 			console.log(errorMessage, errorType);
 		}
 	};
-
 	setEvents(snEmbedxCaseList, eventHandlers);
 </script>
-
     <!-- Case List -->
   
 </body>
