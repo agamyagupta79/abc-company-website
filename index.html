@@ -163,11 +163,81 @@ function getTokenCallBack() {
 	import { getEmbeddables, setEvents, setProperties } from 'https://nagarrosoftwarepvtltddemo19.service-now.com/uxasset/externals/sn_embeddable_core/index.jsdbx';
 	
 	const snEmbedxVisualizationDonut = document.querySelector('sn-embedx-visualization-donut');
-	// Grabbed directly (not shared from the object list's own script below \u2014
+	// Grabbed directly (not shared from the object list's own script below -
 	// separate <script type="module"> blocks don't share top-level variables)
 	// so this script can update the list's filter when a segment is clicked.
 	const snEmbedxObjectList = document.querySelector('sn-embedx-object-list');
 	const OBJECT_LIST_BASE_QUERY = 'active=true^assignment_groupISNOTEMPTY';
+	const STATE_LABEL_TO_VALUE = {
+		'New': '1',
+		'In Progress': '2',
+		'On Hold': '3',
+		'Resolved': '6',
+		'Closed': '7',
+		'Cancelled': '8'
+	};
+
+	// Tracks which segment's filter is currently applied, so clicking the
+	// same segment again clears it back to the full list.
+	let activeSegmentLabel = null;
+	// Guards against SELECTED and CLICKED both firing for the same physical
+	// click (which would otherwise apply the filter, then immediately look
+	// like a second click and clear it again).
+	let lastHandledLabel = null;
+	let lastHandledAt = 0;
+	const DEDUPE_WINDOW_MS = 400;
+
+	function applySegmentFilter(clickedLabel, readyQuery) {
+		if (!clickedLabel) return;
+
+		const now = Date.now();
+		if (clickedLabel === lastHandledLabel && (now - lastHandledAt) < DEDUPE_WINDOW_MS) {
+			console.log('Ignoring duplicate event for the same click:', clickedLabel);
+			return;
+		}
+		lastHandledLabel = clickedLabel;
+		lastHandledAt = now;
+
+		if (!snEmbedxObjectList) {
+			console.log('BLOCKED: sn-embedx-object-list was not found on the page.');
+			return;
+		}
+
+		if (activeSegmentLabel === clickedLabel) {
+			// Same segment clicked again - clear the filter.
+			activeSegmentLabel = null;
+			console.log('Clearing object list filter (same segment clicked again).');
+			setProperties(snEmbedxObjectList, {
+				editQuery: OBJECT_LIST_BASE_QUERY,
+				refreshRequest: Date.now()
+			});
+			return;
+		}
+
+		activeSegmentLabel = clickedLabel;
+		// Prefer ServiceNow's own ready-made query; fall back to building
+		// "state=<value>" from the clicked label using the standard incident
+		// state choice values (confirmed correct for state=2 and state=3 so far).
+		const finalQuery = readyQuery || (STATE_LABEL_TO_VALUE[clickedLabel]
+			? OBJECT_LIST_BASE_QUERY + '^state=' + STATE_LABEL_TO_VALUE[clickedLabel]
+			: null);
+
+		if (!finalQuery) {
+			console.log('No usable filter found for segment:', clickedLabel);
+			return;
+		}
+
+		console.log('Applying filter to object list:', finalQuery);
+		setProperties(snEmbedxObjectList, {
+			editQuery: finalQuery,
+			// Some ServiceNow embeddables need an explicit "something changed"
+			// signal to actually re-fetch after a property update -
+			// refresh-request is documented on this component for that
+			// purpose. A fresh value each call (timestamp) ensures it's
+			// always seen as "new."
+			refreshRequest: Date.now()
+		});
+	}
 
 	getEmbeddables(["sn-embedx-visualization-donut"]);
 
@@ -180,73 +250,16 @@ function getTokenCallBack() {
 		'NOW_VIS_WRAPPER#SELECTED' : (e) => {
 			// Dispatched when the user selects/de-selects element on data visualizations, typically to filter other content on the page
 			var {title, type, isSelected, params, data} = e.detail.payload;
-			// JSON.stringify so nothing gets truncated in the console this time.
-			console.log('isSelected:', isSelected);
-			console.log('params (full):', JSON.stringify(params, null, 2));
-			console.log('data (full):', JSON.stringify(data, null, 2));
-			console.log('object list element found:', !!snEmbedxObjectList);
-
-			if (!snEmbedxObjectList) {
-				console.log('BLOCKED: sn-embedx-object-list was not found on the page.');
-				return;
-			}
-
-			if (!isSelected) {
-				// Segment de-selected (clicked again) - back to the full list.
-				console.log('Resetting object list filter to base query.');
-				setProperties(snEmbedxObjectList, {
-					editQuery: OBJECT_LIST_BASE_QUERY,
-					refreshRequest: Date.now()
-				});
-				return;
-			}
-
-			if (params && params.query) {
-				// Best case: ServiceNow already built the encoded query for us.
-				console.log('Applying filter to object list:', params.query);
-				setProperties(snEmbedxObjectList, {
-					editQuery: params.query,
-					// Some ServiceNow embeddables need an explicit "something
-					// changed" signal to actually re-fetch after a property
-					// update - refresh-request is documented on this
-					// component for that purpose. A fresh value each call
-					// (timestamp) ensures it's always seen as "new."
-					refreshRequest: Date.now()
-				});
-				return;
-			}
-
-			// Fallback: params didn't include a ready-made query (or it was
-			// truncated in devtools and we couldn't confirm it), so build the
-			// filter from the clicked segment's label using ServiceNow's
-			// standard incident "state" choice values. This assumes your
-			// instance hasn't customized them - if the list doesn't match
-			// after clicking, paste the "params (full)" log above and this
-			// gets fixed to use the real field instead.
-			if (data && data.elements && data.elements[0]) {
-				const STATE_LABEL_TO_VALUE = {
-					'New': '1',
-					'In Progress': '2',
-					'On Hold': '3',
-					'Resolved': '6',
-					'Closed': '7',
-					'Cancelled': '8'
-				};
-				const clickedLabel = data.elements[0];
-				const stateValue = STATE_LABEL_TO_VALUE[clickedLabel];
-				if (stateValue) {
-					console.log('Applying fallback filter to object list: state=' + stateValue);
-					setProperties(snEmbedxObjectList, {
-						editQuery: OBJECT_LIST_BASE_QUERY + '^state=' + stateValue,
-						refreshRequest: Date.now()
-					});
-				}
-			}
+			var clickedLabel = data && data.elements && data.elements[0];
+			console.log('SELECTED fired -', clickedLabel, '| isSelected:', isSelected, '| query:', params && params.query);
+			applySegmentFilter(clickedLabel, params && params.query);
 		},
 		'NOW_VIS_WRAPPER#CLICKED' : (e) => {
 			// Dispatched when the visualization is clicked
 			var {title, type, params, data} = e.detail.payload;
-			console.log(title, type, params, data);
+			var clickedLabel = data && data.elements && data.elements[0];
+			console.log('CLICKED fired -', clickedLabel, '| query:', params && params.query);
+			applySegmentFilter(clickedLabel, params && params.query);
 		}
 	};
 
