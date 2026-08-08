@@ -83,6 +83,130 @@ function getTokenCallBack() {
 </script>
     <!-- Case List -->
 
+<!-- Donut visualization + Incident object list, side by side. Clicking a
+     donut segment filters the object list to that segment (click it again
+     to clear the filter). -->
+<div style="display:flex; flex-wrap:wrap; gap:24px; align-items:flex-start; margin-top:24px;">
+
+  <div style="flex:0 0 400px; min-width:320px;">
+<!--  
+    Module: ABC Company Website
+    Group: Group 1
+    Instance: Data visualization 1
+-->
+<sn-embedx-visualization-donut
+	sort-by="value"
+	data-labels-type="value"
+	data-sources='[{"isDatabaseView":false,"allowRealTime":true,"label":"Incident","sourceType":"table","tableOrViewName":"incident","filterQuery":"active=true^assignment_groupISNOTEMPTY","preferredVisualizations":["d24d53f60350de7a652caf3188a46ed2"],"id":"dGFibGVpbmNpZGVudDE3ODYxOTAyMzEwMTU=","dataCategories":["trend","group","simple"]}]'
+	metrics='[{"dataSource":"dGFibGVpbmNpZGVudDE3ODYxOTAyMzEwMTU=","id":"ZEdGaWJHVnBibU5wWkdWdWRERTNPRFj2xOTAyMzEwMTU=","aggregateFunction":"COUNT","numberFormat":{"customFormat":false},"axisId":"primary"}]'
+	group-by='[{"groupBy":[{"dataSource":"dGFibGVpbmNpZGVudDE3ODYxOTAyMzEwMTU=","groupByField":"state","isRange":false,"isChoice":true,"isPaBucket":false}],"maxNumberOfGroups":10,"numberOfGroupsBasedOn":"NO_OF_GROUP_BASED_ON_PER_METRIC","showOthers":false,"disableRanges":false}]'
+	additional-group-by-config='[]'
+	truncation-type="end"
+	show-register
+	register-position="bottom"
+	register-orientation="horizontal"
+	show-register-value
+	legend-horizontal-alignment="center"
+	show-percentage-of-total-in-tooltip
+	ranges-config='{}'
+	color-config='{"type":"default"}'
+	show-header
+	line-clamp="1"
+	header-title-alignment="start"
+	header-title="SOP"
+	header-color='null'
+	title-color='null'
+	sort-by-order="desc"
+	show-total-value
+	empty-state-illustration="no-data"
+	empty-state-heading="No data available."
+	empty-state-heading-level="3"
+	empty-state-content="There are no scores available for the selected criteria. Contact your admin for more info."
+	empty-state-alignment="vertical-centered"
+	number-of-periods="3"
+	period="M"
+	show-export-options
+	user-info='"@context.session.user"'
+	shared-context='null'
+	colors='{}'>
+</sn-embedx-visualization-donut>
+<!--
+	The component also includes the following additional properties:
+	show-border
+	drilldown-label
+	show-data-labels
+	max-label-size
+	show-register-on-same-line
+	legend-max-item-width
+	legend-expand-to-fit
+	show-register-percentage
+	wrap-title
+	show-header-separator
+	description
+	refresh-request
+	show-additional-group-by-selector
+	show-metric-label
+	enable-click-and-stay
+	show-data-table
+	enable-custom-empty-state
+	apply-date-range
+	show-absolute-period
+	auto-aggregate-periods
+	score-type
+	start-time
+	end-time
+	use-current-date-for-end
+	show-extended-error-messages
+-->
+
+<script type="module">
+	import { getEmbeddables, setEvents, setProperties } from 'https://nagarrosoftwarepvtltddemo19.service-now.com/uxasset/externals/sn_embeddable_core/index.jsdbx';
+	
+	const snEmbedxVisualizationDonut = document.querySelector('sn-embedx-visualization-donut');
+	// Grabbed directly (not shared from the object list's own script below \u2014
+	// separate <script type="module"> blocks don't share top-level variables)
+	// so this script can update the list's filter when a segment is clicked.
+	const snEmbedxObjectList = document.querySelector('sn-embedx-object-list');
+	const OBJECT_LIST_BASE_QUERY = 'active=true^assignment_groupISNOTEMPTY';
+
+	getEmbeddables(["sn-embedx-visualization-donut"]);
+
+	const eventHandlers = {
+		'NOW_VIS_WRAPPER#PROPERTY_OVERRIDE' : (e) => {
+			// Dispatched when the visualization overrides its property. For example when the user selects a different group by from the alternative group by selection
+			var {properties} = e.detail.payload;
+			console.log(properties);
+		},
+		'NOW_VIS_WRAPPER#SELECTED' : (e) => {
+			// Dispatched when the user selects/de-selects element on data visualizations, typically to filter other content on the page
+			var {title, type, isSelected, params, data} = e.detail.payload;
+			console.log(title, type, isSelected, params, data);
+
+			if (!snEmbedxObjectList) return;
+
+			if (isSelected && params && params.query) {
+				// params.query is the encoded query ServiceNow builds for the
+				// clicked segment. Check the console output above the first
+				// time you click \u2014 if the shape differs from this, tell me
+				// and I'll adjust.
+				setProperties(snEmbedxObjectList, { editQuery: params.query });
+			} else {
+				// Segment de-selected (clicked again) \u2014 back to the full list.
+				setProperties(snEmbedxObjectList, { editQuery: OBJECT_LIST_BASE_QUERY });
+			}
+		},
+		'NOW_VIS_WRAPPER#CLICKED' : (e) => {
+			// Dispatched when the visualization is clicked
+			var {title, type, params, data} = e.detail.payload;
+			console.log(title, type, params, data);
+		}
+	};
+
+	setEvents(snEmbedxVisualizationDonut, eventHandlers);
+</script>
+  </div>
+
+  <div style="flex:1 1 480px; min-width:320px;">
 <!--  
     Module: ABC Company Website
     Group: Group 1
@@ -152,9 +276,6 @@ function getTokenCallBack() {
 		'SN_EMBEDX_OBJECT_LIST#FOOTER_LINK_SELECTED' : (e) => {
 			// This event is dispatched when footer link is selected
 			var {table, view, edit_query, nest_by} = e.detail.payload;
-			// NOTE: no /objectlist page exists yet, so this "View All" footer
-			// link will 404 until one is built (same pattern as caseview.html /
-			// incidentview.html) \u2014 say if you want that added too.
 			const objectListURL = '/objectlist?emb_table=' + table + '&emb_query=' + edit_query + '&emb_view=' + view + '&emb_nestby=' + nest_by;
 			open(objectListURL, '_self');
 		},
@@ -170,8 +291,6 @@ function getTokenCallBack() {
 			if (table == 'sn_customerservice_case') {
 				RecordViewURL = '/caseview?emb_table=' + table + '&emb_recordid=' + record_sys_id;
 			} else if (table == 'incident') {
-				// CHANGED: incidents now go to the incident-view page instead of
-				// the generic /recordview page, which was never built.
 				RecordViewURL = '/incidentview?emb_table=' + table + '&emb_recordid=' + record_sys_id;
 			} else {
 				RecordViewURL = '/recordview?emb_table=' + table + '&emb_recordid=' + record_sys_id;
@@ -184,6 +303,9 @@ function getTokenCallBack() {
 	};
 	setEvents(snEmbedxObjectList, eventHandlers);
 </script>
+  </div>
+
+</div>
 
 </body>
 </html>
