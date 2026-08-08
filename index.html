@@ -180,19 +180,48 @@ function getTokenCallBack() {
 		'NOW_VIS_WRAPPER#SELECTED' : (e) => {
 			// Dispatched when the user selects/de-selects element on data visualizations, typically to filter other content on the page
 			var {title, type, isSelected, params, data} = e.detail.payload;
-			console.log(title, type, isSelected, params, data);
+			// JSON.stringify so nothing gets truncated in the console this time.
+			console.log('isSelected:', isSelected);
+			console.log('params (full):', JSON.stringify(params, null, 2));
+			console.log('data (full):', JSON.stringify(data, null, 2));
 
 			if (!snEmbedxObjectList) return;
 
-			if (isSelected && params && params.query) {
-				// params.query is the encoded query ServiceNow builds for the
-				// clicked segment. Check the console output above the first
-				// time you click \u2014 if the shape differs from this, tell me
-				// and I'll adjust.
-				setProperties(snEmbedxObjectList, { editQuery: params.query });
-			} else {
-				// Segment de-selected (clicked again) \u2014 back to the full list.
+			if (!isSelected) {
+				// Segment de-selected (clicked again) - back to the full list.
 				setProperties(snEmbedxObjectList, { editQuery: OBJECT_LIST_BASE_QUERY });
+				return;
+			}
+
+			if (params && params.query) {
+				// Best case: ServiceNow already built the encoded query for us.
+				setProperties(snEmbedxObjectList, { editQuery: params.query });
+				return;
+			}
+
+			// Fallback: params didn't include a ready-made query (or it was
+			// truncated in devtools and we couldn't confirm it), so build the
+			// filter from the clicked segment's label using ServiceNow's
+			// standard incident "state" choice values. This assumes your
+			// instance hasn't customized them - if the list doesn't match
+			// after clicking, paste the "params (full)" log above and this
+			// gets fixed to use the real field instead.
+			if (data && data.elements && data.elements[0]) {
+				const STATE_LABEL_TO_VALUE = {
+					'New': '1',
+					'In Progress': '2',
+					'On Hold': '3',
+					'Resolved': '6',
+					'Closed': '7',
+					'Cancelled': '8'
+				};
+				const clickedLabel = data.elements[0];
+				const stateValue = STATE_LABEL_TO_VALUE[clickedLabel];
+				if (stateValue) {
+					setProperties(snEmbedxObjectList, {
+						editQuery: OBJECT_LIST_BASE_QUERY + '^state=' + stateValue
+					});
+				}
 			}
 		},
 		'NOW_VIS_WRAPPER#CLICKED' : (e) => {
