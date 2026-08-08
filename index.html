@@ -18,7 +18,7 @@ function getTokenCallBack() {
 	// TODO: this must return a real ServiceNow auth token for the current
 	// logged-in user (e.g. an id_token from your login/SSO flow). Leaving
 	// this undefined will fail auth for any component that needs a logged-in
-	// user, and can itself cause the embed to render blank.
+	// user, and can itself cause an embed to render blank.
 	var idToken;
 	return Promise.resolve(idToken);
 }
@@ -63,12 +63,11 @@ function getTokenCallBack() {
 		'SN_EMBEDX_CASE_LIST#RECORD_SELECTED' : (e) => {
 			// This event is dispatched when a record is selected.
 			var {table, record_sys_id} = e.detail.payload;
-			// CHANGED: previously built '/caseview?emb_table=...&emb_recordid=...',
-			// a page that doesn't exist on this Vercel site (that's what was
-			// 404ing). Now links straight to the record inside ServiceNow, which
-			// exists today with no extra page needed.
-			const caseViewURL = 'https://nagarrosoftwarepvtltddemo19.service-now.com/' + table + '.do?sys_id=' + record_sys_id;
-			// Redirect to the case record in ServiceNow
+			// Sends the user to caseview.html (served at /caseview via
+			// vercel.json's cleanUrls), which renders the sn-embedx-case-view
+			// component for this specific record.
+			const caseViewURL = '/caseview?emb_table='+table+'&emb_recordid='+record_sys_id;
+			// Redirect to the Case View component page
 			open(caseViewURL,'_self');
 		},
 		'SN_EMBEDX_CASE_LIST#COMPONENT_READY' : (e) => {
