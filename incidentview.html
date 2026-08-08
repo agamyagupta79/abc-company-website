@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Incident Details - ABC Company</title>
+    <script type="module">
+      import { init , login , logout } from 'https://nagarrosoftwarepvtltddemo19.service-now.com/uxasset/externals/sn_embeddable_core/index.jsdbx';
+await init({
+	theme: 'fad87d2ca304121029a4d1aed31e610f',  /* sys_id of the theme to use for the embeddable components in your website*/
+	baseURL: 'https://nagarrosoftwarepvtltddemo19.service-now.com', /* Base URL of the instance to be used for the embeddable components in your website*/
+	authCallback: getTokenCallBack, /* Function which returns the auth token for the current user, required for auth setup*/
+	module: '87992d5a47868350aeb6abf9316d43b0', /* ABC Company Website*/
+    pageName: document.title, /* Uses the browser's document title as the page name in User analytics experience*/
+});
+function getTokenCallBack() {
+	// TODO: this must return a real ServiceNow auth token for the current
+	// logged-in user (e.g. an id_token from your login/SSO flow).
+	var idToken;
+	return Promise.resolve(idToken);
+}
+    </script>
+</head>
+<body>
+    <h1>Incident Details</h1>
+<!--  
+    Module: ABC Company Website
+    Group: Group 1
+    Instance: Incident View 1
+-->
+<sn-custom-embedx-incident-view
+	table="incident"
+	header-configuration-id="62167e1c535130108e4dddeeff7b12d6"
+	action-configuration-id="01405b9b93c73110ab560b2764891872"
+	table-view-for-related-list="c99a2451d7030200eaae68150e61037d"
+	playbook-stage-orientation="horizontal"
+	visible-horizontal-playbook-stages="5"
+	playbook-activity-view-mode="focused">
+</sn-custom-embedx-incident-view>
+<!--
+	The component also includes the following additional properties:
+	sys-id
+	hide-actions
+	hide-all-related-lists
+	show-custom-tab
+	hide-errors
+	hide-activity
+	hide-attachments
+	hide-playbook-process-tab
+	selected-playbook-context-id
+	selected-stage-context-id
+	selected-activity-context-id
+	hide-playbook-stages
+	enable-rich-text
+-->
+<script type="module">
+	import { getEmbeddables, setEvents, setProperties } from 'https://nagarrosoftwarepvtltddemo19.service-now.com/uxasset/externals/sn_embeddable_core/index.jsdbx';
+	
+	const snCustomEmbedxIncidentView = document.querySelector('sn-custom-embedx-incident-view');
+
+	// Read which record to show from the URL (?emb_table=...&emb_recordid=...).
+	// This was commented out in the original snippet, which is why incident
+	// view had no way to know which record to display.
+	const currentURL = new URL(window.location.href);
+	const urlParams = new URLSearchParams(currentURL.search);
+	const tableName = urlParams.get('emb_table');
+	const sysRecordId = urlParams.get('emb_recordid');
+	const playbookExperience = urlParams.get('emb_playbook_experience');
+	const playbookContextId = urlParams.get('emb_playbook_context_id');
+	const stageContextId = urlParams.get('emb_stage_context_id');
+	const activityContextId = urlParams.get('emb_activity_context_id');
+
+	setProperties(snCustomEmbedxIncidentView, {
+		table: tableName,
+		sysId: sysRecordId,
+		playbookExperience: playbookExperience,
+		selectedPlaybookContextId: playbookContextId,
+		selectedStageContextId: stageContextId,
+		selectedActivityContextId: activityContextId
+	});
+
+	getEmbeddables(["sn-custom-embedx-incident-view"]);
+
+	const eventHandlers = {
+		// NOTE: original snippet used 'SN_EMBEDX_CASE_VIEW#...' event names
+		// here (copy-pasted from the case-view component's script), which would
+		// never fire for THIS component. Renamed to follow the naming pattern
+		// every other component in your code uses (tag name, uppercased,
+		// hyphens to underscores). Double-check against your ServiceNow
+		// instance if these still don't fire.
+		'SN_CUSTOM_EMBEDX_INCIDENT_VIEW#COMPONENT_READY' : (e) => {
+			// This event is dispatched when a component is ready and usable.
+		},
+		'SN_CUSTOM_EMBEDX_INCIDENT_VIEW#COMPONENT_ERROR' : (e) => {
+			// This event is dispatched when a property validation or internal error occurs.
+			var {errorMessage, errorType} = e.detail.payload;
+			console.log(errorMessage, errorType);
+		},
+		'SN_CUSTOM_EMBEDX_INCIDENT_VIEW#CASE_COMMENT_ADDED' : (e) => {
+			// This event is dispatched when a comment is added in the activity stream.
+		}
+	};
+
+	setEvents(snCustomEmbedxIncidentView, eventHandlers);
+</script>
+</body>
+</html>
