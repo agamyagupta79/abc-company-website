@@ -184,18 +184,35 @@ function getTokenCallBack() {
 			console.log('isSelected:', isSelected);
 			console.log('params (full):', JSON.stringify(params, null, 2));
 			console.log('data (full):', JSON.stringify(data, null, 2));
+			console.log('object list element found:', !!snEmbedxObjectList);
 
-			if (!snEmbedxObjectList) return;
+			if (!snEmbedxObjectList) {
+				console.log('BLOCKED: sn-embedx-object-list was not found on the page.');
+				return;
+			}
 
 			if (!isSelected) {
 				// Segment de-selected (clicked again) - back to the full list.
-				setProperties(snEmbedxObjectList, { editQuery: OBJECT_LIST_BASE_QUERY });
+				console.log('Resetting object list filter to base query.');
+				setProperties(snEmbedxObjectList, {
+					editQuery: OBJECT_LIST_BASE_QUERY,
+					refreshRequest: Date.now()
+				});
 				return;
 			}
 
 			if (params && params.query) {
 				// Best case: ServiceNow already built the encoded query for us.
-				setProperties(snEmbedxObjectList, { editQuery: params.query });
+				console.log('Applying filter to object list:', params.query);
+				setProperties(snEmbedxObjectList, {
+					editQuery: params.query,
+					// Some ServiceNow embeddables need an explicit "something
+					// changed" signal to actually re-fetch after a property
+					// update - refresh-request is documented on this
+					// component for that purpose. A fresh value each call
+					// (timestamp) ensures it's always seen as "new."
+					refreshRequest: Date.now()
+				});
 				return;
 			}
 
@@ -218,8 +235,10 @@ function getTokenCallBack() {
 				const clickedLabel = data.elements[0];
 				const stateValue = STATE_LABEL_TO_VALUE[clickedLabel];
 				if (stateValue) {
+					console.log('Applying fallback filter to object list: state=' + stateValue);
 					setProperties(snEmbedxObjectList, {
-						editQuery: OBJECT_LIST_BASE_QUERY + '^state=' + stateValue
+						editQuery: OBJECT_LIST_BASE_QUERY + '^state=' + stateValue,
+						refreshRequest: Date.now()
 					});
 				}
 			}
