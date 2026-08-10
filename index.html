@@ -368,6 +368,282 @@ function getTokenCallBack() {
 
 </div>
 
+<!-- Additional visualizations, stacked one below another. -->
+<div style="display:flex; flex-direction:column; gap:24px; max-width:500px; margin-top:24px;">
+
+<!--  
+    Module: ABC Company Website
+    Group: Group 1
+    Instance: Data visualization 2
+-->
+<sn-embedx-visualization-pie
+	sort-by="value"
+	data-labels-type="value"
+	data-sources='[{"isDatabaseView":false,"allowRealTime":true,"label":"Incident","sourceType":"table","tableOrViewName":"incident","filterQuery":"active=true^assignment_groupISNOTEMPTY","preferredVisualizations":["d24d53f60350de7a652caf3188a46ed2"],"id":"dGFibGVpbmNpZGVudDE3ODYzNjEwOTMyMjk=","dataCategories":["trend","group","simple"]}]'
+	metrics='[{"dataSource":"dGFibGVpbmNpZGVudDE3ODYzNjEwOTMyMjk=","id":"ZEdGaWJHVnBibU5wWkdWdWRERTNPRFl6TmpFd09UTXlNams9MTc4NjM2MTA5NjQ3NA==","aggregateFunction":"COUNT","numberFormat":{"customFormat":false},"axisId":"primary"}]'
+	group-by='[{"groupBy":[{"dataSource":"dGFibGVpbmNpZGVudDE3ODYzNjEwOTMyMjk=","groupByField":"state","isRange":false,"isChoice":true,"isPaBucket":false}],"maxNumberOfGroups":10,"numberOfGroupsBasedOn":"NO_OF_GROUP_BASED_ON_PER_METRIC","showOthers":false,"disableRanges":false}]'
+	additional-group-by-config='[]'
+	truncation-type="end"
+	show-register
+	register-position="bottom"
+	register-orientation="horizontal"
+	legend-horizontal-alignment="center"
+	show-percentage-of-total-in-tooltip
+	ranges-config='{}'
+	color-config='{"type":"default"}'
+	show-header
+	line-clamp="1"
+	header-title-alignment="start"
+	header-color='null'
+	title-color='null'
+	sort-by-order="desc"
+	empty-state-illustration="no-data"
+	empty-state-heading="No data available."
+	empty-state-heading-level="3"
+	empty-state-content="There are no scores available for the selected criteria. Contact your admin for more info."
+	empty-state-alignment="vertical-centered"
+	number-of-periods="3"
+	period="M"
+	show-export-options
+	user-info='"@context.session.user"'
+	shared-context='null'
+	colors='{}'>
+</sn-embedx-visualization-pie>
+<!--
+	The component also includes the following additional properties:
+	show-border
+	drilldown-label
+	show-data-labels
+	max-label-size
+	show-register-on-same-line
+	show-register-value
+	legend-max-item-width
+	legend-expand-to-fit
+	show-register-percentage
+	wrap-title
+	show-header-separator
+	header-title
+	description
+	refresh-request
+	show-additional-group-by-selector
+	show-metric-label
+	show-total-value
+	enable-click-and-stay
+	show-data-table
+	enable-custom-empty-state
+	apply-date-range
+	show-absolute-period
+	auto-aggregate-periods
+	score-type
+	start-time
+	end-time
+	use-current-date-for-end
+	show-extended-error-messages
+-->
+<script type="module">
+	import { getEmbeddables, setEvents, setProperties } from 'https://nagarrosoftwarepvtltddemo19.service-now.com/uxasset/externals/sn_embeddable_core/index.jsdbx';
+	
+	const snEmbedxVisualizationPie = document.querySelector('sn-embedx-visualization-pie');
+	getEmbeddables(["sn-embedx-visualization-pie"]);
+	const eventHandlers = {
+		'NOW_VIS_WRAPPER#PROPERTY_OVERRIDE' : (e) => {
+			// Dispatched when the visualization overrides its property. For example when the user selects a different group by from the alternative group by selection
+			var {properties} = e.detail.payload;
+			console.log(properties);
+		},
+		'NOW_VIS_WRAPPER#SELECTED' : (e) => {
+			// Dispatched when the user selects/de-selects element on data visualizations, typically to filter other content on the page
+			var {title, type, isSelected, params, data} = e.detail.payload;
+			console.log(title, type, isSelected, params, data);
+		},
+		'NOW_VIS_WRAPPER#CLICKED' : (e) => {
+			// Dispatched when the visualization is clicked
+			var {title, type, params, data} = e.detail.payload;
+			console.log(title, type, params, data);
+		}
+	};
+	setEvents(snEmbedxVisualizationPie, eventHandlers);
+</script>
+
+<!--  
+    Module: ABC Company Website
+    Group: Group 1
+    Instance: Data visualization 3
+-->
+<sn-embedx-visualization-semi-donut
+	sort-by="value"
+	data-labels-type="value"
+	data-sources='[{"isDatabaseView":false,"allowRealTime":true,"label":"Incident","sourceType":"table","tableOrViewName":"incident","filterQuery":"active=true^assignment_groupISNOTEMPTY","preferredVisualizations":["d24d53f60350de7a652caf3188a46ed2"],"id":"dGFibGVpbmNpZGVudDE3ODYzNjEyMzAyOTE=","dataCategories":["trend","group","simple"]}]'
+	metrics='[{"dataSource":"dGFibGVpbmNpZGVudDE3ODYzNjEyMzAyOTE=","id":"ZEdGaWJHVnBibU5wWkdWdWRERTNPRFl6TmpFeU16QXlPVEU9MTc4NjM2MTIzMjI0MQ==","aggregateFunction":"COUNT","numberFormat":{"customFormat":false},"axisId":"primary"}]'
+	group-by='[{"groupBy":[{"dataSource":"dGFibGVpbmNpZGVudDE3ODYzNjEyMzAyOTE=","groupByField":"state","isRange":false,"isChoice":true,"isPaBucket":false}],"maxNumberOfGroups":10,"numberOfGroupsBasedOn":"NO_OF_GROUP_BASED_ON_PER_METRIC","showOthers":false,"disableRanges":false}]'
+	additional-group-by-config='[]'
+	truncation-type="end"
+	show-register
+	register-position="bottom"
+	register-orientation="horizontal"
+	legend-horizontal-alignment="center"
+	show-percentage-of-total-in-tooltip
+	ranges-config='{}'
+	color-config='{"type":"default"}'
+	show-header
+	line-clamp="1"
+	header-title-alignment="start"
+	header-color='null'
+	title-color='null'
+	sort-by-order="desc"
+	empty-state-illustration="no-data"
+	empty-state-heading="No data available."
+	empty-state-heading-level="3"
+	empty-state-content="There are no scores available for the selected criteria. Contact your admin for more info."
+	empty-state-alignment="vertical-centered"
+	number-of-periods="3"
+	period="M"
+	show-export-options
+	user-info='"@context.session.user"'
+	shared-context='null'
+	colors='{}'>
+</sn-embedx-visualization-semi-donut>
+<!--
+	The component also includes the following additional properties:
+	show-border
+	drilldown-label
+	show-data-labels
+	max-label-size
+	show-register-on-same-line
+	show-register-value
+	legend-max-item-width
+	legend-expand-to-fit
+	show-register-percentage
+	wrap-title
+	show-header-separator
+	header-title
+	description
+	refresh-request
+	show-additional-group-by-selector
+	show-metric-label
+	show-total-value
+	enable-click-and-stay
+	show-data-table
+	enable-custom-empty-state
+	apply-date-range
+	show-absolute-period
+	auto-aggregate-periods
+	score-type
+	start-time
+	end-time
+	use-current-date-for-end
+	show-extended-error-messages
+-->
+<script type="module">
+	import { getEmbeddables, setEvents, setProperties } from 'https://nagarrosoftwarepvtltddemo19.service-now.com/uxasset/externals/sn_embeddable_core/index.jsdbx';
+	
+	const snEmbedxVisualizationSemiDonut = document.querySelector('sn-embedx-visualization-semi-donut');
+	getEmbeddables(["sn-embedx-visualization-semi-donut"]);
+	const eventHandlers = {
+		'NOW_VIS_WRAPPER#PROPERTY_OVERRIDE' : (e) => {
+			// Dispatched when the visualization overrides its property. For example when the user selects a different group by from the alternative group by selection
+			var {properties} = e.detail.payload;
+			console.log(properties);
+		},
+		'NOW_VIS_WRAPPER#SELECTED' : (e) => {
+			// Dispatched when the user selects/de-selects element on data visualizations, typically to filter other content on the page
+			var {title, type, isSelected, params, data} = e.detail.payload;
+			console.log(title, type, isSelected, params, data);
+		},
+		'NOW_VIS_WRAPPER#CLICKED' : (e) => {
+			// Dispatched when the visualization is clicked
+			var {title, type, params, data} = e.detail.payload;
+			console.log(title, type, params, data);
+		}
+	};
+	setEvents(snEmbedxVisualizationSemiDonut, eventHandlers);
+</script>
+
+<!--  
+    Module: ABC Company Website
+    Group: Group 1
+    Instance: Data visualization 4
+-->
+<sn-embedx-visualization-single-score
+	heading-position="bottom"
+	data-sources='[{"isDatabaseView":false,"allowRealTime":true,"label":"Incident","sourceType":"table","tableOrViewName":"incident","filterQuery":"active=true^assignment_groupISNOTEMPTY","preferredVisualizations":["d24d53f60350de7a652caf3188a46ed2"],"id":"dGFibGVpbmNpZGVudDE3ODYzNjEzNDczMDY=","dataCategories":["trend","group","simple"]}]'
+	metrics='[{"dataSource":"dGFibGVpbmNpZGVudDE3ODYzNjEzNDczMDY=","id":"ZEdGaWJHVnBibU5wWkdWdWRERTNPRFl6TmpFek5EY3pNRFk9MTc4NjM2MTM0OTg0Mw==","aggregateFunction":"COUNT","numberFormat":{"customFormat":false},"axisId":"primary"}]'
+	score-size="auto"
+	score-alignment="start"
+	sparkline-style="area"
+	icon-style="background"
+	show-zero
+	ranges-config='null'
+	color-config='{"type":"default"}'
+	show-header
+	line-clamp="1"
+	header-title-alignment="start"
+	header-title="Total Incident"
+	header-color='null'
+	title-color='null'
+	empty-state-illustration="no-data"
+	empty-state-heading="No data available."
+	empty-state-heading-level="3"
+	empty-state-content="There are no scores available for the selected criteria. Contact your admin for more info."
+	empty-state-alignment="vertical-centered"
+	number-of-periods="3"
+	period="M"
+	show-export-options
+	user-info='"@context.session.user"'
+	shared-context='null'
+	colors='{}'>
+</sn-embedx-visualization-single-score>
+<!--
+	The component also includes the following additional properties:
+	show-border
+	score-icon
+	show-score-date
+	use-relative-score-time
+	show-score-update-time
+	wrap-elements
+	wrap-title
+	show-header-separator
+	description
+	refresh-request
+	show-change
+	show-change-percentage
+	show-target
+	show-gap-percentage
+	show-sparkline
+	show-metric-label
+	enable-custom-empty-state
+	apply-date-range
+	show-absolute-period
+	auto-aggregate-periods
+	score-type
+	show-change-from
+	start-time
+	end-time
+	use-current-date-for-end
+	show-extended-error-messages
+-->
+<script type="module">
+	import { getEmbeddables, setEvents, setProperties } from 'https://nagarrosoftwarepvtltddemo19.service-now.com/uxasset/externals/sn_embeddable_core/index.jsdbx';
+	
+	const snEmbedxVisualizationSingleScore = document.querySelector('sn-embedx-visualization-single-score');
+	getEmbeddables(["sn-embedx-visualization-single-score"]);
+	const eventHandlers = {
+		'NOW_VIS_WRAPPER#PROPERTY_OVERRIDE' : (e) => {
+			// Dispatched when the visualization overrides its property. For example when the user selects a different group by from the alternative group by selection
+			var {properties} = e.detail.payload;
+			console.log(properties);
+		},
+		'NOW_VIS_WRAPPER#CLICKED' : (e) => {
+			// Dispatched when the visualization is clicked
+			var {title, type, params, data} = e.detail.payload;
+			console.log(title, type, params, data);
+		}
+	};
+	setEvents(snEmbedxVisualizationSingleScore, eventHandlers);
+</script>
+
+</div>
+
 <script src="https://nagarrosoftwarepvtltddemo19.service-now.com/scripts/sn_csm_ec.js?v=5.6"></script>
 <script>
 SN_CSM_EC.init({
